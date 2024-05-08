@@ -1,0 +1,23 @@
+# Use a minimal base image
+FROM alpine:3.19
+
+# Install runtime dependencies
+RUN apk --no-cache add ca-certificates bash jq curl tzdata
+
+# Set timezone
+ENV TZ=Asia/Jakarta
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Create project directory
+ENV PROJECT_DIR=/opt/en-order-expiration
+RUN mkdir -p $PROJECT_DIR/config
+
+# Copy the built binary and necessary files from local machine
+COPY en-order-expiration $PROJECT_DIR/
+COPY config/app.yaml $PROJECT_DIR/config/
+
+# Set the working directory
+WORKDIR $PROJECT_DIR
+
+# Define the command to run the application
+CMD ["./en-order-expiration", "job:expire-order"]

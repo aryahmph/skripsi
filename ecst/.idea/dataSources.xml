@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="ecst_ticket@ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com" uuid="85ff28d9-2cda-4743-9478-addad6d7de8f">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com:5432/ecst_ticket</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="ecst_order@ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com" uuid="272166df-c5c3-47bf-9fae-10cb98f5a1a1">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com:5433/ecst_order</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="ecst_payment@ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com" uuid="e7905e60-3881-486d-ad95-5d2685332ec3">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com:5434/ecst_payment</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="0@ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com" uuid="fc11eb81-ad47-4969-89d3-d789405cc963">
+      <driver-ref>redis</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
+      <jdbc-url>jdbc:redis://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com:6379/0</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

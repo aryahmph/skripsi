@@ -1,0 +1,22 @@
+### Healthcheck
+GET http://localhost:8082/in/health
+Accept: application/json
+
+### Internal Get Payment
+GET http://localhost:8082/in/v1/payments/01HKW85HKA7HXN9PVQ7X712NR9
+Accept: application/json
+X-Client-Name: local
+
+### Create Payment
+POST http://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com/api/payment/ex/v1/payments
+Content-Type: application/json
+X-User-Id: 01HK6PWF0BA0SGWZSBAHXEPNVH
+X-User-Email: arya@test.com
+
+{
+  "order_id": "01HNF34ZP7KCX101V8JTRNQRXP",
+  "card_number": "4242424242424242",
+  "exp_month": "12",
+  "exp_year": "2020",
+  "cvv": "123"
+}

@@ -1,0 +1,273 @@
+version: '3.9'
+
+services:
+  ecst-ticket:
+    image: aryahmph/skripsi:ecst-ticket
+    working_dir: /opt/ecst-ticket
+    hostname: ecst-ticket
+    networks:
+      - code-network
+    ports:
+      - "8080"
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: '1'
+          memory: '512M'
+        reservations:
+          cpus: '0.5'
+          memory: '128M'
+    depends_on:
+      - ecst-ticket-db
+      - ecst-kafka
+      - ecst-redis
+
+  ecst-order:
+    image: aryahmph/skripsi:ecst-order
+    working_dir: /opt/ecst-order
+    hostname: ecst-order
+    networks:
+      - code-network
+    ports:
+      - "8081"
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: '512M'
+        reservations:
+          cpus: '0.5'
+          memory: '128M'
+    depends_on:
+      - ecst-order-db
+      - ecst-kafka
+      - ecst-redis
+
+  ecst-order-expiration:
+    image: aryahmph/skripsi:ecst-order-expiration
+    working_dir: /opt/ecst-order-expiration
+    container_name: ecst-order-expiration
+    hostname: ecst-order-expiration
+    networks:
+      - code-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: '512M'
+        reservations:
+          cpus: '0.15'
+          memory: '256M'
+    depends_on:
+      - ecst-kafka
+      - ecst-redis
+
+  ecst-payment:
+    image: aryahmph/skripsi:ecst-payment
+    working_dir: /opt/ecst-payment
+    hostname: ecst-payment
+    networks:
+      - code-network
+    ports:
+      - "8082"
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: '512M'
+        reservations:
+          cpus: '0.5'
+          memory: '256M'
+    depends_on:
+      - ecst-payment-db
+      - ecst-kafka
+      - ecst-redis
+
+  ecst-ticket-db:
+    image: postgres:16.1-alpine
+    restart: always
+    container_name: ecst-ticket-db
+    hostname: ecst-ticket-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: k53zbM90GDas
+      POSTGRES_DB: en_ticket
+    volumes:
+      - ecst-ticket-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '8G'
+        reservations:
+          cpus: '1'
+          memory: '4G'
+    networks:
+      - code-network
+
+  ecst-order-db:
+    image: postgres:16.1-alpine
+    restart: always
+    container_name: ecst-order-db
+    hostname: ecst-order-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: k53zbM90GDas
+      POSTGRES_DB: en_order
+    volumes:
+      - ecst-order-db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '8G'
+        reservations:
+          cpus: '1'
+          memory: '4G'
+    networks:
+      - code-network
+
+  ecst-payment-db:
+    image: postgres:16.1-alpine
+    restart: always
+    container_name: ecst-payment-db
+    hostname: ecst-payment-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: k53zbM90GDas
+      POSTGRES_DB: en_payment
+    volumes:
+      - ecst-payment-db:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '8G'
+        reservations:
+          cpus: '1'
+          memory: '4G'
+    networks:
+      - code-network
+
+  ecst-redis:
+    image: redis:7.2-alpine
+    container_name: ecst-redis
+    hostname: ecst-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '1G'
+        reservations:
+          cpus: '0.15'
+          memory: '256M'
+    networks:
+      - code-network
+
+  ecst-zk:
+    image: confluentinc/cp-zookeeper:7.5.1
+    hostname: ecst-zk
+    restart: always
+    container_name: ecst-zk
+    platform: linux/amd64
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: ecst-zk:2888:3888
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      TZ: "Asia/Jakarta"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '1G'
+        reservations:
+          cpus: '0.15'
+          memory: '256M'
+    networks:
+      - code-network
+
+  ecst-kafka:
+    image: confluentinc/cp-kafka:7.5.1
+    hostname: ecst-kafka
+    container_name: ecst-kafka
+    depends_on:
+      - ecst-zk
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'ecst-zk:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://ecst-kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      TZ: "Asia/Jakarta"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '4G'
+        reservations:
+          cpus: '1'
+          memory: '2G'
+    networks:
+      - code-network
+
+  ecst-nginx:
+    image: nginx:latest
+    container_name: ecst-nginx
+    hostname: ecst-nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ecst-ticket
+      - ecst-order
+      - ecst-payment
+    ports:
+      - "80:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '1G'
+        reservations:
+          cpus: '0.5'
+          memory: '512M'
+    networks:
+      - code-network
+
+volumes:
+  ecst-ticket-db:
+    driver: local
+  ecst-order-db:
+    driver: local
+  ecst-payment-db:
+    driver: local
+  ecst-kafka:
+    driver: local
+
+networks:
+  code-network:
+    driver: bridge

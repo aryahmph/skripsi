@@ -1,0 +1,20 @@
+### Healthcheck
+GET http://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com/api/ticket/in/health
+Accept: application/json
+
+### Internal Get Ticket
+GET http://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com/api/ticket/in/v1/tickets/01HN58EZ364N2JMTBVEDWHSW6W
+Accept: application/json
+X-Client-Name: local
+
+### List Ticket Categories
+GET http://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com/api/ticket/ex/v1/ticket-groups/01HJKCYC8QCNHNTJHE6RWYTDJ7/categories
+Accept: application/json
+X-User-Id: 01HK6PWF0BA0SGWZSBAHXEPNVH
+X-User-Email: arya@test.com
+
+### List Tickets
+GET http://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com/api/ticket/ex/v1/ticket-groups/01HJKCYC8QCNHNTJHE6RWYTDJ7?category=CAT-1
+Accept: application/json
+X-User-Id: 01HK6PWF0BA0SGWZSBAHXEPNVH
+X-User-Email: arya@test.com

@@ -1,0 +1,60 @@
+app:
+  name: en-order-expiration
+  debug: false
+  env: dev # dev | stg | prod
+
+apm:
+  name: "rll-core-account"
+  address: "account-datadog"
+  enable: false
+
+logger:
+  level: "debug"
+
+redis:
+  host: "en-redis:6379"
+  db: 0 # 0
+  password: ""
+  read_timeout_second: 2
+  write_timeout_second: 5
+  pool_size: 1000
+  pool_timeout_second: 4
+  min_idle_conn: 100
+  idle_timeout_second: 2
+  route_by_latency: true # true
+  idle_frequency_check: 1 # 1
+  read_only: false
+  route_randomly: false
+
+kafka:
+  brokers: "en-kafka:9092" # if multiple broker host use comma for separator, example: "host1:9092,host2:9092,host3:9092"
+  version: "2.5.0" # kafka version
+  client_id: "account-service" # free to change with your own
+  channel_buffer_size: 256 # how many message in channel
+  producer:
+    timeout_second: 5 # in second
+    ack: -1 # -1 wait for all, 0 = NoResponse doesn't send any response, the TCP ACK is all you get, 1 = WaitForLocal waits for only the local commit to succeed before responding
+    idem_potent: true # If enabled, the producer will ensure that exactly one copy of each message is written
+    partition_strategy: "hash" # available strategy : hash, roundrobin, manual, random, reference
+  consumer:
+    rebalance_strategy: "range" # range, sticky, roundrobin, all of strategy only use for consumer group
+    session_timeout_second: 8 # timeout for consumer group
+    heartbeat_interval_ms: 1000
+    offset_initial: -2 # The initial offset to use if no offset was previously committed. Should be -1 = newest or  -2 = oldest
+    auto_commit: true
+    isolation_level: 1 # `0 = ReadUncommitted` (default) to consume and return all messages in message channel, 1 = ReadCommitted` to hide messages that are part of an aborted transaction
+
+kafka_topics:
+  topic_order_expire: "order-expiration.event.order-expiration-complete.x2"
+
+kafka_eet_second:
+  eet_order_expire: 86400 #1 days
+
+kafka_next_second:
+  next_order_expire: 360
+
+job:
+  order_expire:
+    queue_name: "order-expire"
+    interval_second: 1
+    data_per_interval: 500

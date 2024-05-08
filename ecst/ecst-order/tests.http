@@ -1,0 +1,13 @@
+### Healthcheck
+GET http://localhost:8081/in/health
+Accept: application/json
+
+### Create Order
+POST http://localhost:8081/ex/v1/orders
+Content-Type: application/json
+X-User-Id: 01HK6PWF0BA0SGWZSBAHXEPNVH
+X-User-Email: arya@test.com
+
+{
+  "ticket_id": "01HKWG7XCNQBSJ0FHX0DBR495N"
+}

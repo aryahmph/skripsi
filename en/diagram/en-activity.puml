@@ -1,0 +1,40 @@
+@startuml
+|Pengguna|
+start
+:Pengguna ingin melihat
+kategori tiket;
+|Sistem|
+:Memberikan data
+kumpulan kategori tiket;
+|Pengguna|
+:Memilih kategori tiket;
+:Pengguna ingin melihat kumpulan
+tiket berdasarkan kategori;
+|Sistem|
+:Memberikan data kumpulan
+tiket berdasarkan kategori;
+|Pengguna|
+:Memilih tiket;
+:Melakukan pemesanan tiket;
+|Sistem|
+:Membuat pesanan tiket;
+if (Berhasil buat pesanan?) then
+    |Pengguna|
+    :Gagal buat pesanan;
+    stop
+endif
+|Pengguna|
+:Melakukan pembayaran dengan
+memasukkan data kartu kredit;
+|Sistem|
+:Membuat pembayaran;
+if (Status pembayaran adalah expired?) then
+    |Pengguna|
+    :Gagal bayar pesanan;
+    stop
+endif
+|Sistem|
+:Melakukan perubahan data pemesanan
+bahwa pemesanan telah berhasil;
+stop
+@enduml

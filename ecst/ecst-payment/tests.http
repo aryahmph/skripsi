@@ -1,0 +1,17 @@
+### Healthcheck
+GET http://localhost:8082/in/health
+Accept: application/json
+
+### Create Payment
+POST http://localhost:8082/ex/v1/payments
+Content-Type: application/json
+X-User-Id: 01HK6PWF0BA0SGWZSBAHXEPNVH
+X-User-Email: arya@test.com
+
+{
+  "order_id": "01HKWPBJRWHPENNZHGXE4PG995",
+  "card_number": "4242424242424242",
+  "exp_month": "12",
+  "exp_year": "2020",
+  "cvv": "123"
+}

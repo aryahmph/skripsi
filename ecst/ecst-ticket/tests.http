@@ -1,0 +1,15 @@
+### Healthcheck
+GET http://localhost:8080/in/health
+Accept: application/json
+
+### List Ticket Categories
+GET http://localhost:8080/ex/v1/ticket-groups/01HJKCYC8QCNHNTJHE6RWYTDJ7/categories
+Accept: application/json
+X-User-Id: 01HK6PWF0BA0SGWZSBAHXEPNVH
+X-User-Email: arya@test.com
+
+### List Tickets
+GET http://localhost:8080/ex/v1/ticket-groups/01HJKCYC8QCNHNTJHE6RWYTDJ7?category=VIP
+Accept: application/json
+X-User-Id: 01HK6PWF0BA0SGWZSBAHXEPNVH
+X-User-Email: arya@test.com

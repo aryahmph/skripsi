@@ -1,0 +1,273 @@
+version: '3.9'
+
+services:
+  en-ticket:
+    image: aryahmph/skripsi:en-ticket
+    working_dir: /opt/en-ticket
+    hostname: en-ticket
+    networks:
+      - code-network
+    ports:
+      - "8080"
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: '1'
+          memory: '512M'
+        reservations:
+          cpus: '0.5'
+          memory: '128M'
+    depends_on:
+      - en-ticket-db
+      - en-kafka
+      - en-redis
+
+  en-order:
+    image: aryahmph/skripsi:en-order
+    working_dir: /opt/en-order
+    hostname: en-order
+    networks:
+      - code-network
+    ports:
+      - "8081"
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: '512M'
+        reservations:
+          cpus: '0.5'
+          memory: '128M'
+    depends_on:
+      - en-order-db
+      - en-kafka
+      - en-redis
+
+  en-order-expiration:
+    image: aryahmph/skripsi:en-order-expiration
+    working_dir: /opt/en-order-expiration
+    container_name: en-order-expiration
+    hostname: en-order-expiration
+    networks:
+      - code-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: '512M'
+        reservations:
+          cpus: '0.15'
+          memory: '256M'
+    depends_on:
+      - en-kafka
+      - en-redis
+
+  en-payment:
+    image: aryahmph/skripsi:en-payment
+    working_dir: /opt/en-payment
+    hostname: en-payment
+    networks:
+      - code-network
+    ports:
+      - "8082"
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: dnsrr
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: '512M'
+        reservations:
+          cpus: '0.5'
+          memory: '256M'
+    depends_on:
+      - en-payment-db
+      - en-kafka
+      - en-redis
+
+  en-ticket-db:
+    image: postgres:16.1-alpine
+    restart: always
+    container_name: en-ticket-db
+    hostname: en-ticket-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: k53zbM90GDas
+      POSTGRES_DB: en_ticket
+    volumes:
+      - en-ticket-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '8G'
+        reservations:
+          cpus: '1'
+          memory: '4G'
+    networks:
+      - code-network
+
+  en-order-db:
+    image: postgres:16.1-alpine
+    restart: always
+    container_name: en-order-db
+    hostname: en-order-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: k53zbM90GDas
+      POSTGRES_DB: en_order
+    volumes:
+      - en-order-db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '8G'
+        reservations:
+          cpus: '1'
+          memory: '4G'
+    networks:
+      - code-network
+
+  en-payment-db:
+    image: postgres:16.1-alpine
+    restart: always
+    container_name: en-payment-db
+    hostname: en-payment-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: k53zbM90GDas
+      POSTGRES_DB: en_payment
+    volumes:
+      - en-payment-db:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '8G'
+        reservations:
+          cpus: '1'
+          memory: '4G'
+    networks:
+      - code-network
+
+  en-redis:
+    image: redis:7.2-alpine
+    container_name: en-redis
+    hostname: en-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '1G'
+        reservations:
+          cpus: '0.15'
+          memory: '256M'
+    networks:
+      - code-network
+
+  en-zk:
+    image: confluentinc/cp-zookeeper:7.5.1
+    hostname: en-zk
+    restart: always
+    container_name: en-zk
+    platform: linux/amd64
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: en-zk:2888:3888
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      TZ: "Asia/Jakarta"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '1G'
+        reservations:
+          cpus: '0.15'
+          memory: '256M'
+    networks:
+      - code-network
+
+  en-kafka:
+    image: confluentinc/cp-kafka:7.5.1
+    hostname: en-kafka
+    container_name: en-kafka
+    depends_on:
+      - en-zk
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'en-zk:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://en-kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      TZ: "Asia/Jakarta"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: '4G'
+        reservations:
+          cpus: '1'
+          memory: '2G'
+    networks:
+      - code-network
+
+  en-nginx:
+    image: nginx:latest
+    container_name: en-nginx
+    hostname: en-nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - en-ticket
+      - en-order
+      - en-payment
+    ports:
+      - "80:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '1G'
+        reservations:
+          cpus: '0.5'
+          memory: '512M'
+    networks:
+      - code-network
+
+volumes:
+  en-ticket-db:
+    driver: local
+  en-order-db:
+    driver: local
+  en-payment-db:
+    driver: local
+  en-kafka:
+    driver: local
+
+networks:
+  code-network:
+    driver: bridge

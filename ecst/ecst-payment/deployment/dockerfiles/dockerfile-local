@@ -1,0 +1,22 @@
+FROM golang:1.21-alpine3.18 as builder
+
+
+# Install some build deps + ssh tools for the setup below.
+RUN apk update && apk --no-cache add  build-base  git bash  coreutils openssh  openssl
+
+# this command if you get source from bitbucket repos
+# Create the directory where the application will reside
+RUN mkdir -p /go/src/github.com/aryahmph/ecst-payment
+
+RUN env GO111MODULE=on go install github.com/cortesi/modd/cmd/modd@latest
+
+# Setting timezone
+ENV TZ=Asia/Jakarta
+RUN apk add -U tzdata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+COPY deployment/live-dev.conf /go
+
+WORKDIR /go/src/github.com/aryahmph/ecst-payment
+
+CMD ["sh", "-c", "cd ecst-payment && modd -f /go/live-dev.conf"]

@@ -1,0 +1,279 @@
+#version: '3.9'
+#
+#services:
+#  ecst-ticket:
+#    build:
+#      context: ecst-ticket
+#      dockerfile: deployment/dockerfiles/dockerfile-local
+#    working_dir: /go/src/github.com/aryahmph/ecst-ticket
+#    container_name: ecst-ticket
+#    hostname: ecst-ticket
+#    networks:
+#      - code-network
+#    volumes:
+#      - .:/go/src/github.com/aryahmph/ecst-ticket
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - ecst-postgres
+#      - ecst-kafka
+#      - ecst-redis
+#
+#  ecst-order:
+#    build:
+#      context: ecst-order
+#      dockerfile: deployment/dockerfiles/dockerfile-local
+#    working_dir: /go/src/github.com/aryahmph/ecst-order
+#    container_name: ecst-order
+#    hostname: ecst-order
+#    networks:
+#      - code-network
+#    volumes:
+#      - .:/go/src/github.com/aryahmph/ecst-order
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - ecst-postgres
+#      - ecst-kafka
+#      - ecst-redis
+#
+#  ecst-order-expiration:
+#    build:
+#      context: ecst-order-expiration
+#      dockerfile: deployment/dockerfiles/dockerfile-local
+#    working_dir: /go/src/github.com/aryahmph/ecst-order-expiration
+#    container_name: ecst-order-expiration
+#    hostname: ecst-order-expiration
+#    networks:
+#      - code-network
+#    volumes:
+#      - .:/go/src/github.com/aryahmph/ecst-order-expiration
+#    depends_on:
+#      - ecst-kafka
+#      - ecst-redis
+#
+#  ecst-payment:
+#    build:
+#      context: ecst-payment
+#      dockerfile: deployment/dockerfiles/dockerfile-local
+#    working_dir: /go/src/github.com/aryahmph/ecst-payment
+#    container_name: ecst-payment
+#    hostname: ecst-payment
+#    networks:
+#      - code-network
+#    volumes:
+#      - .:/go/src/github.com/aryahmph/ecst-payment
+#    ports:
+#      - "8082:8082"
+#    depends_on:
+#      - ecst-postgres
+#      - ecst-kafka
+#      - ecst-redis
+#
+#  ecst-postgres:
+#    image: postgres:15.5-alpine
+#    restart: always
+#    container_name: ecst-postgres
+#    hostname: ecst-postgres
+#    environment:
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: example
+#    volumes:
+#      - ecst-postgres:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - code-network
+#
+#  ecst-redis:
+#    image: redis:7.2-alpine
+#    container_name: ecst-redis
+#    hostname: ecst-redis
+#    restart: always
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - code-network
+#
+#  ecst-zk:
+#    image: confluentinc/cp-zookeeper:7.5.1
+#    hostname: ecst-zk
+#    restart: always
+#    container_name: ecst-zk
+#    platform: linux/amd64
+#    ports:
+#      - "2181:2181"
+#    environment:
+#      ZOO_MY_ID: 1
+#      ZOO_SERVERS: ecst-zk:2888:3888
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#      TZ: "Asia/Jakarta"
+#    networks:
+#      - code-network
+#
+#  ecst-kafka:
+#    image: confluentinc/cp-kafka:7.5.1
+#    hostname: ecst-kafka
+#    container_name: ecst-kafka
+#    depends_on:
+#      - ecst-zk
+#    ports:
+#      - "9092:9092"
+#      - "29092:29092"
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: 'ecst-zk:2181'
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://ecst-kafka:9092,PLAINTEXT_HOST://localhost:29092
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+#      TZ: "Asia/Jakarta"
+#    networks:
+#      - code-network
+#
+#volumes:
+#  ecst-postgres:
+#    driver: local
+#  ecst-kafka:
+#    driver: local
+#
+#networks:
+#  code-network:
+#    driver: bridge
+
+version: '3.9'
+
+services:
+  ecst-ticket:
+    build:
+      context: ecst-ticket
+      dockerfile: deployment/dockerfiles/dockerfile-dev
+    working_dir: /opt/ecst-ticket
+    container_name: ecst-ticket
+    hostname: ecst-ticket
+    networks:
+      - code-network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ecst-postgres
+      - ecst-kafka
+      - ecst-redis
+
+  ecst-order:
+    build:
+      context: ecst-order
+      dockerfile: deployment/dockerfiles/dockerfile-dev
+    working_dir: /opt/ecst-order
+    container_name: ecst-order
+    hostname: ecst-order
+    networks:
+      - code-network
+    ports:
+      - "8081:8081"
+    depends_on:
+      - ecst-postgres
+      - ecst-kafka
+      - ecst-redis
+
+  ecst-order-expiration:
+    build:
+      context: ecst-order-expiration
+      dockerfile: deployment/dockerfiles/dockerfile-dev
+    working_dir: /opt/ecst-order-expiration
+    container_name: ecst-order-expiration
+    hostname: ecst-order-expiration
+    networks:
+      - code-network
+    depends_on:
+      - ecst-kafka
+      - ecst-redis
+
+  ecst-payment:
+    build:
+      context: ecst-payment
+      dockerfile: deployment/dockerfiles/dockerfile-dev
+    working_dir: /opt/ecst-payment
+    container_name: ecst-payment
+    hostname: ecst-payment
+    networks:
+      - code-network
+    ports:
+      - "8082:8082"
+    depends_on:
+      - ecst-postgres
+      - ecst-kafka
+      - ecst-redis
+
+  ecst-postgres:
+    image: postgres:15.5-alpine
+    restart: always
+    container_name: ecst-postgres
+    hostname: ecst-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: example
+    volumes:
+      - ecst-postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - code-network
+
+  ecst-redis:
+    image: redis:7.2-alpine
+    container_name: ecst-redis
+    hostname: ecst-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - code-network
+
+  ecst-zk:
+    image: confluentinc/cp-zookeeper:7.5.1
+    hostname: ecst-zk
+    restart: always
+    container_name: ecst-zk
+    platform: linux/amd64
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: ecst-zk:2888:3888
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      TZ: "Asia/Jakarta"
+    networks:
+      - code-network
+
+  ecst-kafka:
+    image: confluentinc/cp-kafka:7.5.1
+    hostname: ecst-kafka
+    container_name: ecst-kafka
+    depends_on:
+      - ecst-zk
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'ecst-zk:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://ecst-kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      TZ: "Asia/Jakarta"
+    networks:
+      - code-network
+
+volumes:
+  ecst-postgres:
+    driver: local
+  ecst-kafka:
+    driver: local
+
+networks:
+  code-network:
+    driver: bridge

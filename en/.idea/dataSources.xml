@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="prod ticket@localhost" uuid="fa0789a7-c16e-4fc2-842a-25dec5ca8c1d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com:5432/en_ticket</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="en_order@ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com" uuid="3da059d9-f86b-4b6f-8c09-648c6dfa50b1">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com:5433/en_order</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="en_payment@ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com" uuid="8b30a133-2091-41b8-8ff8-f8bafa0db2c3">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com:5434/en_payment</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="0@ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com" uuid="ebf8cb57-12f1-46b6-a957-4adb36f12232">
+      <driver-ref>redis</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
+      <jdbc-url>jdbc:redis://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com:6379/0</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

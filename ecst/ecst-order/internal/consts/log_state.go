@@ -1,0 +1,15 @@
+package consts
+
+const (
+	LogEventStateValidateRequest = "ValidateRequest"
+	LogEventStateDecodeRequest   = "DecodeRequest"
+
+	LogEventStateKafkaPublishMessageToTopic = "KafkaPublishMessageToTopic"
+	LogEventStateDelayQueueAddJob           = "DelayQueueAddJob"
+	LogEventStateDelayQueueRemoveJob        = "DelayQueueRemoveJob"
+	LogEventStateValidateExecutionTime      = "ValidateExecutionTime"
+
+	LogEventStateFetchDB  = "FetchDB"
+	LogEventStateInsertDB = "InsertDB"
+	LogEventStateUpdateDB = "UpdateDB"
+)

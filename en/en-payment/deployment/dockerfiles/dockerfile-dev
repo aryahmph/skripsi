@@ -1,0 +1,25 @@
+# Use a minimal base image
+FROM alpine:3.19
+
+# Install runtime dependencies
+RUN apk --no-cache add ca-certificates bash jq curl tzdata
+
+# Set timezone
+ENV TZ=Asia/Jakarta
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Create project directory
+ENV PROJECT_DIR=/opt/en-payment
+RUN mkdir -p $PROJECT_DIR/config $PROJECT_DIR/database/migration
+
+# Copy the built binary and necessary files from local machine
+COPY en-payment $PROJECT_DIR/
+COPY config/app.yaml config/msg.yaml $PROJECT_DIR/config/
+COPY database/migration $PROJECT_DIR/database/migration/
+
+# Set the working directory
+WORKDIR $PROJECT_DIR
+
+# Define the command to run the application
+CMD ["./en-payment", "db:migrate up"]
+CMD ["./en-payment", "serve-http"]

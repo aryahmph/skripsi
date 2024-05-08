@@ -1,0 +1,427 @@
+messages:
+  - name: SUCCESS
+    code: 200
+    contents:
+      - lang: id
+        text: Sukses
+      - lang: en
+        text: Success
+
+  - name: AUTHENTICATION_FAILURE
+    code: 401
+    contents:
+      - lang: id
+        text: Autentikasi gagal.
+      - lang: en
+        text: Authentication failure.
+
+  - name: SIGNATURE_FAILURE
+    code: 401
+    contents:
+      - lang: id
+        text: Signature salah.
+      - lang: en
+        text: Signature incorrect.
+
+  - name: DATA_NOT_FOUND
+    code: 422
+    contents:
+      - lang: id
+        text: Data tidak ditemukan di sistem.
+      - lang: en
+        text: Data not found in our system.
+
+  - name: VALIDATION_FAILURE
+    code: 400
+    contents:
+      - lang: id
+        text: Kesalahan parameter masukan data.
+      - lang: en
+        text: The given data was invalid.
+
+  - name: UNPROCESSABLE_ENTITY
+    code: 422
+    contents:
+      - lang: id
+        text: Tidak dapat diproses.
+      - lang: en
+        text: The given data cannot to process.
+
+  - name: REQUEST_TIMEOUT
+    code: 408
+    contents:
+      - lang: id
+        text: Batas ambang waktu permintaan telah habis.
+      - lang: en
+        text: Request timeout.
+
+  - name: INTERNAL_FAILURE
+    code: 500
+    contents:
+      - lang: id
+        text: Telah terjadi kesalahan pada sistem.
+      - lang: en
+        text: An internal service error has occurred.
+
+  - name: FORBIDDEN
+    code: 403
+    contents:
+      - lang: id
+        text: Anda tidak di izinkan untuk mengakses sumber ini, Silahkan kontak admin.
+      - lang: en
+        text: You can not access this resource. Please contact the admin!
+
+  - name: PROVIDER_ERROR
+    code: 500
+    contents:
+      - lang: id
+        text: Vendor bermasalah, silahkan hubungi customer support.
+      - lang: en
+        text: Service Provider something went worng, please contact our customer service.
+
+  - name: EMAIL_DOMAIN_NOT_ALLOWED
+    code: 422
+    contents:
+      - lang: id
+        text: Domain email Anda tidak diperbolehkan pada sistem kami.
+      - lang: en
+        text: Your email domain is not allowed in our system.
+
+  - name: ACCOUNT_EXIST
+    code: 422
+    contents:
+      - lang: id
+        text: Akun Anda telah terdaftar pada sistem kami.
+      - lang: en
+        text: Your account has been registered in our system.
+
+  - name: MAXIMUM_REQUEST_OTP
+    code: 422
+    contents:
+      - lang: id
+        text: Anda telah mencapai batas maksimal request kode OTP. Silahkan coba lagi setelah %s.
+      - lang: en
+        text: You have reached the maximum OTP code request limit. Please try again after %s.
+
+  - name: MAXIMUM_VERIFY_OTP
+    code: 422
+    contents:
+      - lang: id
+        text: Anda telah mencapai batas maksimal verifikasi kode OTP. Silahkan coba lagi setelah %s.
+      - lang: en
+        text: You have reached the maximum OTP code verification limit. Please try again after %s.
+
+  - name: OTP_CODE_INVALID
+    code: 422
+    contents:
+      - lang: id
+        text: Kode OTP yang Anda masukkan salah. Harap cek ulang kembali.
+      - lang: en
+        text: Your OTP Code is wrong. Please check again.
+
+  - name: SUCCESS_VERIFY_REGISTER
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil verifikasi registrasi user.
+      - lang: en
+        text: Success verified user registration.
+
+  - name: SUCCESS_REGISTER_USER
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil melakukan registrasi user.
+      - lang: en
+        text: Success registered user.
+
+  - name: UNSUPPORTED_GRANT_TYPE
+    code: 400
+    contents:
+      - lang: id
+        text: Grant type tidak didukung.
+      - lang: en
+        text: Unsupported grant type.
+
+  - name: ACCOUNT_NOT_REGISTERED
+    code: 422
+    contents:
+      - lang: id
+        text: Gagal login, harap daftar terlebih dahulu.
+      - lang: en
+        text: Login failed, please register first.
+
+  - name: ACCOUNT_DISABLED
+    code: 422
+    contents:
+      - lang: id
+        text: Akun anda telah dinonaktifkan. Silahkan hubungi Customer Service kami untuk informasi lebih lanjut.
+      - lang: en
+        text: Your account has been disabled. Please contact our Customer Service for more information.
+
+  - name: ACCOUNT_NOT_VERIFIED
+    code: 422
+    contents:
+      - lang: id
+        text: Lakukan verifikasi untuk mengakses akun Anda.
+      - lang: en
+        text: Please verify to access your account.
+
+  - name: INCORRECT_EMAIL_PASSWORD
+    code: 422
+    contents:
+      - lang: id
+        text: Email atau kata sandi yang Anda masukkan salah.
+      - lang: en
+        text: The email or password you entered is incorrect.
+
+  - name: MAXIMUM_FAILED_LOGIN
+    code: 422
+    contents:
+      - lang: id
+        text: Anda telah mencapai batas maksimal kesalahan login. Silahkan coba lagi setelah %s.
+      - lang: en
+        text: You have reached the maximum limit of a failed login. Please try again after %s.
+
+  - name: SUCCESS_LOGIN
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil login.
+      - lang: en
+        text: Success login.
+
+  - name: SUCCESS_VERIFICATION_CHANNELS
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil menampilkan kanal verifikasi.
+      - lang: en
+        text: Success get verification channels.
+
+  - name: SUCCESS_REQUEST_OTP
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil membuat OTP untuk login user.
+      - lang: en
+        text: Success generate OTP for user login.
+
+  - name: SUCCESS_BLACKLIST_TOKEN
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil memblokir token.
+      - lang: en
+        text: Success blacklist token.
+
+  - name: SUCCESS_REFRESH_TOKEN
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil membuat token baru.
+      - lang: en
+        text: Success generate new token.
+
+  - name: UNSUPPORTED_TYPE
+    code: 400
+    contents:
+      - lang: id
+        text: Tipe tidak didukung.
+      - lang: en
+        text: Unsupported type.
+
+  - name: SUCCESS_REQUEST_VERIFICATION_NUMBER
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil meminta kode verifikasi ke %s - %s.
+      - lang: en
+        text: Success request verification number to %s - %s.
+
+  - name: SUCCESS_REQUEST_CHANGE_IDENTITY
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil meminta kode verifikasi untuk mengubah identitas.
+      - lang: en
+        text: Success request verification number to change identity.
+
+  - name: SUCCESS_VERIFY_CHANGE_IDENTITY
+    code: 200
+    contents:
+      - lang: id
+        text: Selamat %s anda telah berubah.
+      - lang: en
+        text: Successfully changed your %s.
+
+  - name: IDENTITY_ALREADY_REGISTERED
+    code: 422
+    contents:
+      - lang: id
+        text: Identitas baru anda ini sudah terdaftar pada sistem kami.
+      - lang: en
+        text: Your new identity is already been registered in our system.
+
+  - name: MONTH
+    contents:
+      - lang: id
+        text: bulan
+      - lang: en
+        text: months
+
+  - name: DAY
+    contents:
+      - lang: id
+        text: hari
+      - lang: en
+        text: days
+
+  - name: HOUR
+    contents:
+      - lang: id
+        text: jam
+      - lang: en
+        text: hours
+
+  - name: MINUTE
+    contents:
+      - lang: id
+        text: menit
+      - lang: en
+        text: minutes
+
+  - name: SECOND
+    contents:
+      - lang: id
+        text: detik
+      - lang: en
+        text: seconds
+
+  - name: INVALID_PASSWORD
+    code: 422
+    contents:
+      - lang: id
+        text: Kata sandi harus mengandung huruf kecil, huruf besar, angka dan karakter khusus.
+      - lang: en
+        text: The password must contain lowercase, uppercase, numbers and special characters.
+
+  - name: VERIFICATION_CHANNEL_FAILED
+    code: 422
+    contents:
+      - lang: id
+        text: Kode verifikasi dikirimkan apabila akun sudah terdaftar.
+      - lang: en
+        text: A verification code is sent when the account is registered.
+
+  - name: LOGIN_FAILED
+    code: 422
+    contents:
+      - lang: id
+        text: Email atau kata sandi yang Anda masukkan salah.
+      - lang: en
+        text: The email or password you entered is incorrect.
+
+  - name: INSUFFICIENT_BALANCE
+    code: 422
+    contents:
+      - lang: id
+        text: Saldo pengiriman untuk notifikasi ini tidak mencukupi. Silahkan hubungi Customer Service kami.
+      - lang: en
+        text: The delivery balance for this notification is not sufficient. Please contact our Customer Service.
+
+  - name: SUPPRESSION_NOTIFICATIONS
+    code: 422
+    contents:
+      - lang: id
+        text: Anda tidak dapat menerima notifikasi untuk sementara waktu. Silahkan hubungi Customer Service kami untuk informasi lebih lanjut.
+      - lang: en
+        text: You may not receive notifications for a while. Please contact our Customer Service for more information.
+
+  - name: SUPPRESSION_NOTIFICATIONS_LIMIT_TIME
+    code: 422
+    contents:
+      - lang: id
+        text: Anda tidak dapat menerima notifikasi untuk sementara waktu. Silahkan coba lagi setelah beberapa saat.
+      - lang: en
+        text: You may not receive notifications for a while. Please try again after a few moments.
+
+  - name: SUCCESS_REQUEST_NEW_IDENTITY
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil meminta kode verifikasi untuk menambahkan identitas baru.
+      - lang: en
+        text: Success request verification number to add new identity.
+
+  - name: FIRST_IDENTITY_ALREADY_SET
+    code: 422
+    contents:
+      - lang: id
+        text: Identitas pertama sudah terisi, silakan gunakan opsi ubah identitas.
+      - lang: en
+        text: First identity already set, please use option change identity.
+
+  - name: MAXIMUM_REQUEST_PIN
+    code: 422
+    contents:
+      - lang: id
+        text: Anda telah mencapai batas maksimal request PIN. Silahkan coba lagi setelah %s.
+      - lang: en
+        text: You have reached the maximum PIN request limit. Please try again after %s.
+
+  - name: SUCCESS_REQUEST_PIN
+    code: 200
+    contents:
+      - lang: id
+        text: Berhasil meminta kode verifikasi menggunakan PIN.
+      - lang: en
+        text: Success requested verification number using PIN.
+
+  - name: MAXIMUM_VERIFY_PIN
+    code: 422
+    contents:
+      - lang: id
+        text: Anda telah mencapai batas maksimal verifikasi PIN. Silahkan coba lagi setelah %s.
+      - lang: en
+        text: You have reached the maximum PIN verification limit. Please try again after %s.
+
+  - name: PIN_INVALID
+    code: 422
+    contents:
+      - lang: id
+        text: PIN yang Anda masukkan salah. Harap cek ulang kembali.
+      - lang: en
+        text: Your PIN is wrong. Please check again.
+
+  - name: PIN_ALREADY_SET
+    code: 422
+    contents:
+      - lang: id
+        text: PIN Anda ini sudah terdaftar pada sistem kami.
+      - lang: en
+        text: Your PIN is already been registered in our system.
+
+  - name: PIN_NOT_SET
+    code: 422
+    contents:
+      - lang: id
+        text: PIN Anda belum terdaftar pada sistem kami. Silahkan gunakan opsi atur PIN.
+      - lang: en
+        text: Your PIN is not set in our system. Please use option set PIN.
+
+  - name: FEATURE_DISABLED
+    code: 403
+    contents:
+      - lang: id
+        text: Fitur ini dinonaktifkan.
+      - lang: en
+        text: This feature is disabled.
+
+  - name: ACCOUNT_ROLE_ALREADY_SET
+    code: 422
+    contents:
+      - lang: id
+        text: Role Anda sudah terdaftar pada sistem kami.
+      - lang: en
+        text: Your Role is already been registered in our system.

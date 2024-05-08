@@ -1,0 +1,279 @@
+#version: '3.9'
+#
+#services:
+#  en-ticket:
+#    build:
+#      context: en-ticket
+#      dockerfile: deployment/dockerfiles/dockerfile-local
+#    working_dir: /go/src/github.com/aryahmph/en-ticket
+#    container_name: en-ticket
+#    hostname: en-ticket
+#    networks:
+#      - code-network
+#    volumes:
+#      - .:/go/src/github.com/aryahmph/en-ticket
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - en-postgres
+#      - en-kafka
+#      - en-redis
+#
+#  en-order:
+#    build:
+#      context: en-order
+#      dockerfile: deployment/dockerfiles/dockerfile-local
+#    working_dir: /go/src/github.com/aryahmph/en-order
+#    container_name: en-order
+#    hostname: en-order
+#    networks:
+#      - code-network
+#    volumes:
+#      - .:/go/src/github.com/aryahmph/en-order
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - en-postgres
+#      - en-kafka
+#      - en-redis
+#
+#  en-order-expiration:
+#    build:
+#      context: en-order-expiration
+#      dockerfile: deployment/dockerfiles/dockerfile-local
+#    working_dir: /go/src/github.com/aryahmph/en-order-expiration
+#    container_name: en-order-expiration
+#    hostname: en-order-expiration
+#    networks:
+#      - code-network
+#    volumes:
+#      - .:/go/src/github.com/aryahmph/en-order-expiration
+#    depends_on:
+#      - en-kafka
+#      - en-redis
+#
+#  en-payment:
+#    build:
+#      context: en-payment
+#      dockerfile: deployment/dockerfiles/dockerfile-local
+#    working_dir: /go/src/github.com/aryahmph/en-payment
+#    container_name: en-payment
+#    hostname: en-payment
+#    networks:
+#      - code-network
+#    volumes:
+#      - .:/go/src/github.com/aryahmph/en-payment
+#    ports:
+#      - "8082:8082"
+#    depends_on:
+#      - en-postgres
+#      - en-kafka
+#      - en-redis
+#
+#  en-postgres:
+#    image: postgres:15.5-alpine
+#    restart: always
+#    container_name: en-postgres
+#    hostname: en-postgres
+#    environment:
+#      POSTGRES_USER: admin
+#      POSTGRES_PASSWORD: example
+#    volumes:
+#      - en-postgres:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - code-network
+#
+#  en-redis:
+#    image: redis:7.2-alpine
+#    container_name: en-redis
+#    hostname: en-redis
+#    restart: always
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - code-network
+#
+#  en-zk:
+#    image: confluentinc/cp-zookeeper:7.5.1
+#    hostname: en-zk
+#    restart: always
+#    container_name: en-zk
+#    platform: linux/amd64
+#    ports:
+#      - "2181:2181"
+#    environment:
+#      ZOO_MY_ID: 1
+#      ZOO_SERVERS: en-zk:2888:3888
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#      TZ: "Asia/Jakarta"
+#    networks:
+#      - code-network
+#
+#  en-kafka:
+#    image: confluentinc/cp-kafka:7.5.1
+#    hostname: en-kafka
+#    container_name: en-kafka
+#    depends_on:
+#      - en-zk
+#    ports:
+#      - "9092:9092"
+#      - "29092:29092"
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: 'en-zk:2181'
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://en-kafka:9092,PLAINTEXT_HOST://localhost:29092
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+#      TZ: "Asia/Jakarta"
+#    networks:
+#      - code-network
+#
+#volumes:
+#  en-postgres:
+#    driver: local
+#  en-kafka:
+#    driver: local
+#
+#networks:
+#  code-network:
+#    driver: bridge
+
+version: '3.9'
+
+services:
+  en-ticket:
+    build:
+      context: en-ticket
+      dockerfile: deployment/dockerfiles/dockerfile-dev
+    working_dir: /opt/en-ticket
+    container_name: en-ticket
+    hostname: en-ticket
+    networks:
+      - code-network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - en-postgres
+      - en-kafka
+      - en-redis
+
+  en-order:
+    build:
+      context: en-order
+      dockerfile: deployment/dockerfiles/dockerfile-dev
+    working_dir: /opt/en-order
+    container_name: en-order
+    hostname: en-order
+    networks:
+      - code-network
+    ports:
+      - "8081:8081"
+    depends_on:
+      - en-postgres
+      - en-kafka
+      - en-redis
+
+  en-order-expiration:
+    build:
+      context: en-order-expiration
+      dockerfile: deployment/dockerfiles/dockerfile-dev
+    working_dir: /opt/en-order-expiration
+    container_name: en-order-expiration
+    hostname: en-order-expiration
+    networks:
+      - code-network
+    depends_on:
+      - en-kafka
+      - en-redis
+
+  en-payment:
+    build:
+      context: en-payment
+      dockerfile: deployment/dockerfiles/dockerfile-dev
+    working_dir: /opt/en-payment
+    container_name: en-payment
+    hostname: en-payment
+    networks:
+      - code-network
+    ports:
+      - "8082:8082"
+    depends_on:
+      - en-postgres
+      - en-kafka
+      - en-redis
+
+  en-postgres:
+    image: postgres:15.5-alpine
+    restart: always
+    container_name: en-postgres
+    hostname: en-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: example
+    volumes:
+      - en-postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - code-network
+
+  en-redis:
+    image: redis:7.2-alpine
+    container_name: en-redis
+    hostname: en-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - code-network
+
+  en-zk:
+    image: confluentinc/cp-zookeeper:7.5.1
+    hostname: en-zk
+    restart: always
+    container_name: en-zk
+    platform: linux/amd64
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: en-zk:2888:3888
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      TZ: "Asia/Jakarta"
+    networks:
+      - code-network
+
+  en-kafka:
+    image: confluentinc/cp-kafka:7.5.1
+    hostname: en-kafka
+    container_name: en-kafka
+    depends_on:
+      - en-zk
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'en-zk:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://en-kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      TZ: "Asia/Jakarta"
+    networks:
+      - code-network
+
+volumes:
+  en-postgres:
+    driver: local
+  en-kafka:
+    driver: local
+
+networks:
+  code-network:
+    driver: bridge

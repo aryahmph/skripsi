@@ -1,0 +1,14 @@
+@startuml
+start
+:Inisiasi iterasi permintaan;
+repeat
+  :Kirim permintaan pilih kategori tiket;
+  :Kirim permintaan pilih tiket;
+  :Kirim permintaan beli tiket;
+  if (Iterasi genap?) then
+  :Kirim permintaan bayar tiket;
+  endif
+
+repeat while (Sebanyak iterasi)
+stop
+@enduml

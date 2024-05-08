@@ -1,0 +1,18 @@
+### Healthcheck
+GET http://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com/api/order/in/health
+Accept: application/json
+
+### Internal Get Order
+GET http://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com/api/order/in/v1/orders/01HKW859ACNG6Y9N6EGSJBWS14
+Accept: application/json
+X-Client-Name: local
+
+### Create Order
+POST http://ec2-54-251-92-13.ap-southeast-1.compute.amazonaws.com/api/order/ex/v1/orders
+Content-Type: application/json
+X-User-Id: 01HK6PWF0BA0SGWZSBAHXEPNVH
+X-User-Email: arya@test.com
+
+{
+  "ticket_id": "01HN89J8CJXGT52PFQKD85G9BS"
+}

@@ -1,0 +1,50 @@
+@startuml
+
+actor Pengguna
+participant Ticket
+participant Order
+participant OrderExpiration
+participant Payment
+queue MessageBroker
+
+Pengguna -> Ticket ++: Permintaan lihat kategori tiket
+Ticket --> Pengguna: Kategori tiket
+Pengguna -> Ticket: Permintaan lihat tiket berdasarkan kategori
+Ticket --> Pengguna --: Tiket berdasarkan kategori
+
+Pengguna -> Order ++: Buat order tiket
+Order -> Order: Cek ketersediaan tiket
+Order -> MessageBroker ++: Kirim event order berhasil dibuat
+MessageBroker --> Order --: OK
+Order --> Pengguna --: Kode transaksi order
+
+MessageBroker --> Ticket: Event order dibuat
+Ticket -> Ticket: Ubah tiket menjadi tidak tersedia
+Ticket -> MessageBroker ++: Kirim event tiket update
+MessageBroker --> Ticket --: OK
+
+MessageBroker --> OrderExpiration ++: Event order dibuat
+OrderExpiration -> OrderExpiration : Buat timer untuk membatalkan order
+OrderExpiration -> MessageBroker: Kirim event order expiration complete
+MessageBroker --> OrderExpiration --: OK
+
+MessageBroker --> Order ++: Event tiket update
+Order -> Order: Ubah data tiket
+MessageBroker --> Order: Event order expiration complete
+Order -> Order: Ubah status order menjadi expire
+Order -> MessageBroker: Kirim event order expire
+MessageBroker --> Order --: OK
+
+MessageBroker --> Ticket ++: Event order expire
+Ticket -> Ticket --: Ubah tiket menjadi tersedia
+
+
+Pengguna -> Payment ++: Buat pembayaran
+Payment -> Order: Minta data pesanan
+Order --> Payment: Data pesanan
+Payment -> MessageBroker: Kirim event pembayaran berhasil
+Payment --> Pengguna --: Pembayaran berhasil
+
+MessageBroker --> Order ++: Event payment dibuat
+Order -> Order --: Ubah status order menjadi selesai
+@enduml
